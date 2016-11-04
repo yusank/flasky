@@ -4,7 +4,7 @@
  @Author:      yusank
  @Email:       yusankurban@gmail.com
  @DateTime:    2016-11-04 10:59:19
- @Description: Description 
+ @Description: app/auth/__init__.py 
 '''
 from flask import Blueprint
 

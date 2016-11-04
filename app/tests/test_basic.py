@@ -1,10 +1,10 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3b
 # -*- coding:utf-8 -*- 
 '''
  @Author:      yusank
  @Email:       yusankurban@gmail.com
  @DateTime:    2016-11-03 17:10:04
- @Description: Description 
+ @Description: app/test/test_basic.py 
 '''
 import unittest
 from flask import current_app

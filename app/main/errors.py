@@ -4,7 +4,7 @@
  @Author:      yusank
  @Email:       yusankurban@gmail.com
  @DateTime:    2016-11-03 16:26:28
- @Description: Description 
+ @Description: app/main/errors.py 
 '''
 from flask import render_template
 from . import main

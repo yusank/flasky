@@ -4,7 +4,7 @@
  @Author:      yusank
  @Email:       yusankurban@gmail.com
  @DateTime:    2016-11-04 10:45:46
- @Description: Description 
+ @Description: app/tests/test_user_model.py 
 '''
 import unittest
 from app.models import User

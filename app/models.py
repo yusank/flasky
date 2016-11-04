@@ -4,7 +4,7 @@
  @Author:      yusank
  @Email:       yusankurban@gmail.com
  @DateTime:    2016-11-03 18:04:23
- @Description: Description 
+ @Description: app/models.py 
 '''
 import os
 from flask import current_app
@@ -15,24 +15,37 @@ from flask_script import Shell
 from flask_login import UserMixin
 from . import login_manager,db
 
-class Role(db.model):
+
+class Role(db.Model):
 	__tablename__ = 'roles'
 	id = db.Column(db.Integer, primary_key = True)
 	name = db.Column(db.String(64), unique = True)
+	users = db.relationship('User', backref='role', lazy='dynamic')
 
 	def __repr__(self):
 		return '<Role %r>' % self.name
 
-	users = db.relationship('User', backref = 'role')
 
-class User(UserMixin,db.model):
+class User(UserMixin,db.Model):
 	__tablename__ = 'users'
 	id = db.Column(db.Integer, primary_key = True)
 	email = db.Column(db.String(64),unique = True, index = True)
 	username = db.Column(db.String(64), unique = True, index = True)
 	password_hash = db.Column(db.String(128))
-	role_id = db.Column(db.Integer, db.Foreignkey('roles.id'))
+	role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 	confirmed = db.Column(db.Boolean, default = False)
+
+	@property
+	def password(self):
+		raise AttributeError('password is not readable attribute')
+
+	@password.setter
+	def password(self,password):
+		self.password_hash = generete_password_hash(password)
+	
+
+	def verify_password(self,password):
+		return check_password_hash(self.password_hash,password)
 
 	def generate_confirmation_token(self, expiration = 3600):
 		s = Serializer(current_app.config['SECRET_KEY'], expiration)
@@ -52,16 +65,6 @@ class User(UserMixin,db.model):
 
 	def __repr__(self):
 		return '<User %r>' % self.username
-
-	@property
-	def password(self):
-		raise AttributeError('password is not readable attribute')
-
-	@password.setter
-	def password(self,password):
-		self.password_hash = generete_password_hash(password)
-	def verify_password(self,password):
-		return check_password_hash(self.password_hash,password)
 
 	@login_manager.user_loader
 	def load_user(user_id):

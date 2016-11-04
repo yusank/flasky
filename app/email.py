@@ -4,7 +4,7 @@
  @Author:      yusank
  @Email:       yusankurban@gmail.com
  @DateTime:    2016-11-03 18:04:35
- @Description: Description 
+ @Description: app/eamil.py 
 '''
 from threading import Thread
 from flask import render_template, current_app
