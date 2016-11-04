@@ -7,6 +7,8 @@
  @Description: Description 
 '''
 import os
+from flask import current_app
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_migrate import Migrate, MigrateCommand
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_script import Shell
@@ -30,6 +32,23 @@ class User(UserMixin,db.model):
 	username = db.Column(db.String(64), unique = True, index = True)
 	password_hash = db.Column(db.String(128))
 	role_id = db.Column(db.Integer, db.Foreignkey('roles.id'))
+	confirmed = db.Column(db.Boolean, default = False)
+
+	def generate_confirmation_token(self, expiration = 3600):
+		s = Serializer(current_app.config['SECRET_KEY'], expiration)
+		return s.dumps({'confirm':self.id})
+
+	def confirm(self,token):
+		s = Serializer(current_app.config['SECRET_KEY'])
+		try:
+			data  = s.loads(token)
+		except:
+			return False
+		if data.get('confirm') != self.id:
+			return False
+		self.confirmed = True
+		db.session.add(self)
+		return True
 
 	def __repr__(self):
 		return '<User %r>' % self.username

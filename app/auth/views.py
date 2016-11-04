@@ -23,6 +23,16 @@ def login():
 		falsh('Invalid username or password.')
 	return render_template('auth/login.html', form = form)
 
+@auth.route('/register', methods = ['GET', 'POST'])
+def register():
+	form = RegistrationForm()
+	if form.validata_on_submit():
+		user = User(email = form.email.data,username = form.username.data, password = form.password.data)
+		db.session.add(user)
+		flash('you can now login .')
+		render_template(url_for('auth.login'))
+	return render_template('auth/register.html', form = form)
+
 @auth.route('/logout')
 @login_required
 def logout():
