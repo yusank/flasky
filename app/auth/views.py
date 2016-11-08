@@ -13,8 +13,8 @@ from .. import db
 from ..models import User
 from .forms import LoginForm, RegistrationForm
 from ..email import send_email
-from decorators import admin_required, permission_required
-from .models import Permission
+# from ..decorators import admin_required, permission_required
+# from .models import Permission
 
 @auth.before_app_request
 def before_request():
@@ -80,3 +80,14 @@ def resend_confirmation():
 	flash('A new confirmation email has been send to you by email')
 	return redirect(url_for('main.index'))
 
+# @main.route('/admin')
+# @login_required
+# @admin_required
+# def for_admin_only():
+# 	return "For Admistrator!!!"
+
+# @main.route('/moderator')
+# @login_required
+# @permission_required(Permission.MODERATE_COMMIT)
+# def for_moderators_only():
+# 	return "For comment moderators!"

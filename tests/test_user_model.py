@@ -14,6 +14,16 @@ class UserModelTestCase(unittest.TestCase):
 		u = User(password = 'abc')
 		self.assertTrue(u.password_hash is not None)
 
+	def test_roles_and_permissions(self):
+		Role.insert_roles()
+		u = User(email = 'yusan@example.com', password = 'abc')
+		self.assertTrue(u.can(Permission.WRITE_ARTICLES))
+		self.assertFalse(u.can(Permission.MODERATE_COMMENTS))
+
+	def test_anonymous_user(self):
+		u = AnonymousUser()
+		self.assertFalse(u.can(Permission.FOLLOW))
+
 	def test_no_password_getter(self):
 		u = User(password = 'abc')
 		with self.assertRaises(AttributeError):

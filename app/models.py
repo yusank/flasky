@@ -13,7 +13,7 @@ from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_migrate import Migrate, MigrateCommand
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_script import Shell
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 from . import login_manager,db
 
 
