@@ -13,6 +13,8 @@ from .. import db
 from ..models import User
 from .forms import LoginForm, RegistrationForm
 from ..email import send_email
+from decorators import admin_required, permission_required
+from .models import Permission
 
 @auth.before_app_request
 def before_request():
@@ -77,3 +79,4 @@ def resend_confirmation():
 	send_email(current_user.email, 'Confirm your Account', 'auth/email/confirm',user = current_user,token = token)
 	flash('A new confirmation email has been send to you by email')
 	return redirect(url_for('main.index'))
+
