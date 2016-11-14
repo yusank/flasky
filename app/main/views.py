@@ -11,12 +11,18 @@ from flask_login import login_required,current_user
 from ..decorators import admin_required
 from . import main
 from ..models import User, Role
-from .forms import EditProfileForm, EditProfileAdminForm
+from .forms import EditProfileForm, EditProfileAdminForm, PostForm
 from .. import db
 
-@main.route('/')
+@main.route('/', methods = ['GET','POST'])
 def index():
-    return render_template('index.html')
+	form = PostForm()
+	if current_user.can(Permission.WHERE_ARTICLES) and form.validate_on_submit():
+		post = Post(body = form.body.data, auther = current_user._get_current_object())
+		db.session.add(post)
+		return redirect(url_for('.index'))
+	posts = Post.query.order_by(Post.timestamp.desc()).all()
+	return render_template('index.html', form = form, posts = posts)
 
 @main.route('/user/<username>')
 def user(username):
