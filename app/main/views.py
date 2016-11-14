@@ -10,15 +10,15 @@ from flask import render_template,abort, flash, redirect, url_for
 from flask_login import login_required,current_user
 from ..decorators import admin_required
 from . import main
-from ..models import User, Role
+from ..models import User, Role, Permission, Post
 from .forms import EditProfileForm, EditProfileAdminForm, PostForm
 from .. import db
 
 @main.route('/', methods = ['GET','POST'])
 def index():
 	form = PostForm()
-	if current_user.can(Permission.WHERE_ARTICLES) and form.validate_on_submit():
-		post = Post(body = form.body.data, auther = current_user._get_current_object())
+	if current_user.can(Permission.WRITE_ARTICLES) and form.validate_on_submit():
+		post = Post(body = form.body.data, author = current_user._get_current_object())
 		db.session.add(post)
 		return redirect(url_for('.index'))
 	posts = Post.query.order_by(Post.timestamp.desc()).all()
