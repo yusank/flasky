@@ -16,7 +16,7 @@ class Config:
 	MAIL_PORT = 25
 	MAIL_USE_TLS = True
 	MAIL_USERNAME = 'yusank'					#os.environ.get('MAIL_USERNAME')
-	MAIL_PASSWORD = 'yusan717'					#os.environ.get('MAIL_PASSWORD')
+	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 	FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
 	FLASKY_MAIL_SENDER = 'Flasky Admin <yusank@yeah.net>'
 	FLASKY_ADMIN = 'yusank@yeah.net'								#os.environ.get('FLASKY_ADMIN')
