@@ -11,6 +11,7 @@ from wtforms import StringField, SubmitField,TextAreaField, BooleanField, Select
 from wtforms.validators import Required, Length, Regexp, Email
 from wtforms import ValidationError
 from ..models import User, Role
+from flask_pagedown.fields import PageDownField
 
 class NameForm(Form):
     name = StringField('What is your name?', validators=[Required()])
@@ -24,7 +25,7 @@ class EditProfileForm(Form):
 class EditProfileAdminForm(Form):
 	email = StringField('Email', validators = [Required(), Length(1,64),Email()])
 	username = StringField('Username', validators = [Required(), Length(1,64), Regexp('^[A-Za-z][A-Za-z0-p_.]*$',0,
-																						'Usernmae must have only letters,'
+																						'Username must have only letters,'
 																						'numbers,dots or underscores')])
 	confirmed = BooleanField('confirmed')
 	role = SelectField('Role', coerce = int)
@@ -39,7 +40,7 @@ class EditProfileAdminForm(Form):
 		self.user = user
 
 	def validate_email(self, field):
-		if field.data != self.user.email and user.query.filter_by(email = field.data).first():
+		if field.data != self.user.email and User.query.filter_by(email = field.data).first():
 			raise ValidationError('Email already registered.')
 
 	def validate_username(self, field):
@@ -47,5 +48,5 @@ class EditProfileAdminForm(Form):
 			raise ValidationError('Username already in use.')
 
 class PostForm(Form):
-	body = TextAreaField('what`s new recently?', validators = [Required()])
+	body = PageDownField('what`s new recently?', validators = [Required()])
 	submit = SubmitField('Submit')
