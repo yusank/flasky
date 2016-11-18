@@ -140,6 +140,10 @@ class User(UserMixin,db.Model):
 			followed_id = user.id).first() is not None
 
 	@property
+	def followed_posts(self):
+		return Post.query.join(Follow, Follow.followed_id == Post.author_id).filter(Follow.followed_id == self.id)
+
+	@property
 	def password(self):
 		raise AttributeError('password is not readable attribute')
 
@@ -264,7 +268,7 @@ class Post(db.Model):
 			p = Post(body = forgery_py.lorem_ipsum.sentences(randint(1,3)),
 					timestamp = forgery_py.date.date(True),
 					author = u)
-			db.session.add(u)
+			db.session.add(p)
 			db.session.commit()
 
 	@staticmethod
