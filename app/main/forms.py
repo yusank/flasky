@@ -50,3 +50,7 @@ class EditProfileAdminForm(Form):
 class PostForm(Form):
 	body = PageDownField('what`s new recently?', validators = [Required()])
 	submit = SubmitField('Submit')
+
+class CommentForm(Form):
+	body = StringField('', validators = [Required()])
+	submit = SubmitField('Submit')
