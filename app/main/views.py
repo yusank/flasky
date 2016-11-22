@@ -111,6 +111,7 @@ def post(id):
 	comments = pagination.items
 	return render_template('post.html', posts = [post], form = form,
 		comments = comments, pagination = pagination)
+	
 @main.route('/edit/<int:id>', methods = ['GET','POST'])
 @login_required
 def edit(id):
