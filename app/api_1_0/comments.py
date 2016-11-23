@@ -37,7 +37,7 @@ def get_comment(id):
 	comment = Comment.query.get_or_404(id)
 	return jsonify(comment.to_json())
 
-@api.route('/posts/<int:id>/comments')
+@api.route('/posts/<int:id>/comments/')
 def get_post_comments(id):
 	post = Post.query.get_or_404(id)
 	page = request.args.get('page', 1, type = int)
