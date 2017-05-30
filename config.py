@@ -4,7 +4,7 @@
  @Author:      yusank
  @Email:       yusankurban@gmail.com
  @DateTime:    2016-11-03 15:46:46
- @Description: config.py 
+ @Description: config.py
 '''
 import os
 
@@ -17,8 +17,8 @@ class Config:
     MAIL_SERVER = 'smtp.yeah.net'
     MAIL_PORT = 25
     MAIL_USE_TLS = True
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_USERNAME = 'yusank@yeah.net'                                             #os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = 'yusanauth7'                                                        #os.environ.get('MAIL_PASSWORD')
     FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
     FLASKY_MAIL_SENDER = 'Flasky Admin <yusank@yeah.net>'
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN')

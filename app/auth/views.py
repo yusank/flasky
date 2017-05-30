@@ -12,8 +12,8 @@ from flask import render_template, redirect, request, url_for, flash
 from . import auth
 from .. import db
 from ..models import User
-from .forms import LoginForm, RegistrationForm, ChangePasswordForm, PasswordResetRequestForm, PasswordResetForm, \
-    ChangeEmailForm
+from .forms import LoginFlaskForm, RegistrationFlaskForm, ChangePasswordFlaskForm, PasswordResetRequestFlaskForm, PasswordResetFlaskForm, \
+    ChangeEmailFlaskForm
 from ..email import send_email
 
 
@@ -34,7 +34,7 @@ def unconfirmed():
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
+    form = LoginFlaskForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
@@ -54,7 +54,7 @@ def logout():
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegistrationForm()
+    form = RegistrationFlaskForm()
     if form.validate_on_submit():
         user = User(email=form.email.data, username=form.username.data, password=form.password.data)
         db.session.add(user)
@@ -91,7 +91,7 @@ def resend_confirmation():
 @auth.route('/change-password', methods=['GET', 'POST'])
 @login_required
 def change_password():
-    form = ChangePasswordForm()
+    form = ChangePasswordFlaskForm()
     if form.validate_on_submit():
         if current_user.verify_password(form.old_password.data):
             current_user.password = form.password.data
@@ -107,7 +107,7 @@ def change_password():
 def password_reset_request():
     if not current_user.is_anonymous:
         return redirect(url_for('main.index'))
-    form = PasswordResetRequestForm()
+    form = PasswordResetRequestFlaskForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
@@ -126,7 +126,7 @@ def password_reset_request():
 def password_reset(token):
     if not current_user.is_anonymous:
         return redirect(url_for('main.index'))
-    form = PasswordResetForm()
+    form = PasswordResetFlaskForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None:
@@ -142,7 +142,7 @@ def password_reset(token):
 @auth.route('/change-email', methods=['GET', 'POST'])
 @login_required
 def change_email_request():
-    form = ChangeEmailForm()
+    form = ChangeEmailFlaskForm()
     if form.validate_on_submit():
         if current_user.verify_password(form.password.data):
             new_email = form.email.data

@@ -6,20 +6,22 @@
  @DateTime:    2016-11-03 16:30:43
  @Description: app/main/views.py 
 '''
+
 from flask import render_template, abort, flash, redirect, url_for, \
     request, current_app, make_response
 from flask_login import login_required, current_user
 from ..decorators import admin_required, permission_required
 from . import main
 from ..models import User, Role, Permission, Post, Comment
-from .forms import EditProfileForm, EditProfileAdminForm, PostForm, \
-    CommentForm
+from .forms import EditProfileFlaskForm, EditProfileAdminFlaskForm, PostFlaskForm, \
+    CommentFlaskForm
 from .. import db
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    form = PostForm()
+    form = PostFlaskForm()
+    print("hello")
     if current_user.can(Permission.WRITE_ARTICLES) and form.validate_on_submit():
         post = Post(body=form.body.data, author=current_user._get_current_object())
         db.session.add(post)
@@ -54,7 +56,7 @@ def user(username):
 @main.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    form = EditProfileForm()
+    form = EditProfileFlaskForm()
     if form.validate_on_submit():
         current_user.name = form.name.data
         current_user.location = form.location.data
@@ -73,7 +75,7 @@ def edit_profile():
 @admin_required
 def edit_profile_admin(id):
     user = User.query.get_or_404(id)
-    form = EditProfileAdminForm(user=user)
+    form = EditProfileAdminFlaskForm(user=user)
     if form.validate_on_submit():
         user.email = form.email.data
         user.username = form.username.data
@@ -98,7 +100,7 @@ def edit_profile_admin(id):
 @main.route('/post/<int:id>', methods=['GET', 'POST'])
 def post(id):
     post = Post.query.get_or_404(id)
-    form = CommentForm()
+    form = CommentFlaskForm()
     if form.validate_on_submit():
         comment = Comment(body=form.body.data,
                           post=post,
@@ -124,7 +126,7 @@ def edit(id):
     post = Post.query.get_or_404(id)
     if current_user != post.author and not current_user.can(Permission.ADMINISTER):
         abort(403)
-    form = PostForm()
+    form = PostFlaskForm()
     if form.validate_on_submit():
         post.body = form.body.data
         db.session.add(post)

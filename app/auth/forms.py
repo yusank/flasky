@@ -6,21 +6,21 @@
  @DateTime:    2016-11-04 11:26:41
  @Description: app/auth/forms.py 
 '''
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import Required, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
 from ..models import User
 
 
-class LoginForm(Form):
+class LoginFlaskForm(FlaskForm):
     email = StringField('Email', validators=[Required(), Length(1, 64), Email()])
     password = PasswordField('Password', validators=[Required()])
     remember_me = BooleanField('keep me logged in')
     submit = SubmitField('Log In')
 
 
-class RegistrationForm(Form):
+class RegistrationFlaskForm(FlaskForm):
     email = StringField('Email', validators=[Required(), Length(1, 64), Email()])
     username = StringField('Username', validators=[Required(), Length(1, 64), Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
                                                                                      'Usernames must have only letters,'
@@ -39,7 +39,7 @@ class RegistrationForm(Form):
             raise ValidationError('Username already registered.')
 
 
-class ChangePasswordForm(Form):
+class ChangePasswordFlaskForm(FlaskForm):
     old_password = PasswordField('Old password', validators=[Required()])
     password = PasswordField('New password', validators=[
         Required(), EqualTo('password2', message='Passwords must match')])
@@ -47,12 +47,12 @@ class ChangePasswordForm(Form):
     submit = SubmitField('Update Password')
 
 
-class PasswordResetRequestForm(Form):
+class PasswordResetRequestFlaskForm(FlaskForm):
     email = StringField('Email', validators=[Required(), Length(1, 64), Email()])
     submit = SubmitField('Reset Password')
 
 
-class PasswordResetForm(Form):
+class PasswordResetFlaskForm(FlaskForm):
     email = StringField('Email', validators=[Required(), Length(1, 64), Email()])
     password = PasswordField('New Password', validators=[
         Required(), EqualTo('password2', message='Passwords must match')])
@@ -64,7 +64,7 @@ class PasswordResetForm(Form):
             raise ValidationError('Unknown email address.')
 
 
-class ChangeEmailForm(Form):
+class ChangeEmailFlaskForm(FlaskForm):
     email = StringField('New Email', validators=[Required(), Length(1, 64), Email()])
     password = PasswordField('Password', validators=[Required()])
     submit = SubmitField('Update Email Address')
