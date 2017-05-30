@@ -152,7 +152,7 @@ class UserModelTestCase(unittest.TestCase):
         with self.app.test_request_context('/', base_url='https://example.com'):
             gravatar_ssl = u.gravatar()
         self.assertTrue('http://www.gravatar.com/avatar/' +
-                        'd4c74594d841139328695756648b6bd6'in gravatar)
+                        'd4c74594d841139328695756648b6bd6' in gravatar)
         self.assertTrue('s=256' in gravatar_256)
         self.assertTrue('r=pg' in gravatar_pg)
         self.assertTrue('d=retro' in gravatar_retro)
@@ -205,4 +205,3 @@ class UserModelTestCase(unittest.TestCase):
                          'posts', 'followed_posts', 'post_count']
         self.assertEqual(sorted(json_user.keys()), sorted(expected_keys))
         self.assertTrue('api/v1.0/users/' in json_user['url'])
-
